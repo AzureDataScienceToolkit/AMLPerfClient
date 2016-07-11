@@ -59,10 +59,12 @@ class AMLRequestGenerator:
             
     def _calculateStatistics(self):
         self.ErrorCount = len(self.Errors)
-        self.AvgProcessingTime = int(sum(self.ProcessingTime)/len(self.ProcessingTime))
-        self.ResponseTime = [i.split(':') for i in self.ResponseTime] #converting headers into number of seconds
-        self.ResponseTime = [datetime.timedelta(hours=int(i[0]), minutes=int(i[1]), seconds=float(i[2])).total_seconds() for i in self.ResponseTime]
-        self.AvgResponseTime = round(((sum(self.ResponseTime)/len(self.ResponseTime))*100),2)
+        if len(self.ProcessingTime) > 0:
+            self.AvgProcessingTime = int(sum(self.ProcessingTime)/len(self.ProcessingTime))
+        if len(self.ResponseTime) > 0:
+            self.ResponseTime = [i.split(':') for i in self.ResponseTime] #converting headers into number of seconds
+            self.ResponseTime = [datetime.timedelta(hours=int(i[0]), minutes=int(i[1]), seconds=float(i[2])).total_seconds() for i in self.ResponseTime]
+            self.AvgResponseTime = round(((sum(self.ResponseTime)/len(self.ResponseTime))*100),2)
 
     def getStatistics(self):
         print "Total processing time %s s" % self.TotalTime
